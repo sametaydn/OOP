@@ -1,0 +1,156 @@
+class Rational
+{
+public:
+ Rational( int = 0, int = 1 );
+~Rational();//Destructor
+ Rational add( const Rational & );
+ Rational subtract( const Rational & );
+ Rational multiply( const Rational & );
+ Rational divide( const Rational & );
+ void toRationalString();
+ void toDouble();
+private:
+ int numerator;
+ int denominator;
+ void reduction();
+
+};
+#include <iostream>
+using std::cout;
+#include "Rational.h"
+Rational::Rational( int n, int d )
+{
+ numerator = n;
+ denominator = d;
+ reduction();
+}
+  Rational::~Rational(){}
+Rational Rational::add( const Rational &addit )
+{
+ Rational a;
+ a.numerator = addit.numerator * denominator;
+ a.numerator += addit.denominator * numerator;
+ a.denominator = addit.denominator * denominator;
+ a.reduction();
+ return a;
+}
+Rational Rational::divide( const Rational &div )
+{
+ Rational d;
+ d.numerator = div.denominator * numerator;
+ d.denominator = denominator * div.numerator;
+ d.reduction();
+ return d;
+} // end function division
+Rational Rational::subtract( const Rational &subst )
+{
+ Rational s;
+ s.numerator = subst.denominator * numerator;
+ s.numerator -= denominator * subst.numerator;
+ s.denominator = subst.denominator * denominator;
+ s.reduction();
+ return s;
+}
+Rational Rational::multiply( const Rational &multip )
+{
+ Rational m;
+ m.numerator = multip.numerator * numerator;
+ m.denominator = multip.denominator * denominator;
+ m.reduction();
+ return m;
+}
+
+void Rational::toRationalString()
+{
+ if ( denominator == 0 )
+ cout << "\n You cannot divide this number by 0" << '\n';
+ else if ( numerator == 0 )
+ cout << 0;
+ else
+ cout << numerator << '/' << denominator;
+}
+void Rational::toDouble()
+{
+ cout << static_cast< double >( numerator ) / denominator;
+}
+void Rational::reduction()
+{
+ int big;
+ big = numerator > denominator ? numerator : denominator;
+ int gcd = 0;
+ for ( int f = 2; f <= big; f++ )
+ if ( numerator % f == 0 && denominator % f == 0 )
+ gcd = f;
+ if (gcd != 0)
+ {
+ numerator /= gcd;
+ denominator /= gcd;
+ }
+}
+
+
+#include <iostream>
+using std::cout;
+using std::endl;
+#include "Rational.h"
+int main()
+{
+Rational f1( 9, 63 ), f2( 3, 7 ), r;
+cout<<"*********************************************"<<"\n\n";
+
+f1.toRationalString();
+cout << " + ";
+f2.toRationalString();
+r = f1.add( f2 );
+cout << " = ";
+r.toRationalString();
+cout << '\n';
+r.toRationalString();
+cout << " = ";
+r.toDouble();
+cout << "\n\n";
+cout<<"*********************************************"<<"\n\n";
+f1.toRationalString();
+cout << " - ";
+f2.toRationalString();
+r = f1.subtract( f2 );
+cout << " = ";
+r.toRationalString();
+cout << '\n';
+r.toRationalString();
+cout << " = ";
+r.toDouble();
+cout << "\n\n";
+
+cout<<"*********************************************"<<"\n\n";
+
+f1.toRationalString();
+cout << " x ";
+f2.toRationalString();
+r = f1.multiply( f2 );
+cout << " = ";
+r.toRationalString();
+cout << '\n';
+r.toRationalString();
+cout << " = ";
+r.toDouble();
+cout << "\n\n";
+
+cout<<"*********************************************"<<"\n\n";
+
+f1.toRationalString();
+cout << " / ";
+f2.toRationalString();
+r = f1.divide( f2 );
+cout << " = ";
+r.toRationalString();
+cout << '\n';r.toRationalString();
+cout << " = ";
+r.toDouble();
+cout << "\n\n";
+
+cout<<"*********************************************"<<"\n\n";
+
+return 0;
+}
+
