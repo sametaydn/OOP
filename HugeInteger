@@ -1,0 +1,151 @@
+**************************************************************************************************************************************
+Create a class HugeInteger which uses a 40-element array of digits to store integers as large as 40 digits each.
+Provide methods
+a)	Input, [10 Points]
+b)	ToString,[5 Points]
+c)	Add [20 Points]
+For comparing HugeInteger objects, provide the following methods:
+a)	IsEqualTo, [10 Points]
+b)	IsNotEqualTo, [5 Points]
+c)	IsGreaterThan, [10 Points]
+d)	IsLessThan, [10 Points]
+e)	IsGreaterthanOrEqualTo [5 Points]
+f)	IsLessThanOrEqualTo [5 Points]
+
+Each of these is a method that returns true if the relationship holds between the two HugeInteger objects and returns false if the 
+relationship does not hold.
+
+In the Input method, use the string method ToCharArray to convert the input string into an array of characters, 
+then iterate through these characters to create your HugeInteger. 
+
+**************************************************************************************************************************************
+
+import java.util.*;
+import java.math.BigInteger;
+
+
+class HugeInteger {
+
+    boolean positive;
+    public int num[];
+    public int size=40;
+    String value;
+    public HugeInteger() {
+        num = new int[40];
+        this.value=value;
+    }
+
+    public void input()
+    {
+        Scanner scan = new Scanner(System.in);
+        String inputString = scan.nextLine();
+        char[] integerChar = inputString.toCharArray();
+        if ( integerChar[ 0 ] == '-' )
+            positive = false;
+        if ( positive )
+            num[ size - integerChar.length ] =
+                    integerChar[ 0 ] - '0';
+        for ( int i = 0; i < integerChar.length; i++ )
+            num[ size - integerChar.length + i ] =
+                    integerChar[ i ] - '0';
+    }
+    public String toString(){
+        String value = "";
+        int i;
+        for(i = size -1; i >= 0; i--) {
+            if(num[i] != 0)
+                break;
+        }
+        System.out.println();
+        for(int j = i; j >= 0; j--) {
+            value = num[j] + value;
+        }
+        return value;
+    }
+
+
+    public void add(HugeInteger t){
+        int carry = 0;
+        for (int i = 0 ; i < num.length; i++) {
+            num[i] += t.num[i] + carry;
+            if (num[i] < 10)
+                carry = 0;
+            else {
+                num[i] -= 10;
+                carry = 1;
+            }
+
+        }
+        System.out.println(this);
+
+    }
+
+    public Boolean IsEqualTo(HugeInteger t) {
+
+        for (int i = 0; i < size; i++) {
+            if (this.num[i] != t.num[i])
+                return false;
+        }
+        return true;
+    }
+
+
+
+    public Boolean IsNotEqualTo(HugeInteger t) {
+
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] != t.num[i])
+                return true;
+        }
+        return false;
+    }
+
+    public Boolean IsGreaterThan(HugeInteger t) {
+
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] > t.num[i])
+                return true;
+        }
+
+        return false;
+    }
+
+    public Boolean IsLessThan(HugeInteger t) {
+
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] < t.num[i])
+                return true;
+        }
+
+        return false;
+    }
+
+    public Boolean IsGreaterThanOrEqualTo(HugeInteger t) {
+
+        return  this.IsGreaterThan(t) || this.IsEqualTo(t) ;
+    }
+
+    public Boolean IsLessThanOrEqualTo(HugeInteger t){
+
+        return this.IsLessThan(t) || this.IsEqualTo(t);
+    }
+
+
+    public static void main(String[] args) {
+        Scanner scan =new Scanner(System.in);
+        System.out.println("Enter a string:");
+        HugeInteger h1 = new HugeInteger();
+        h1.input();
+        System.out.println("Enter a string2:");
+        HugeInteger h2 = new HugeInteger();
+        h2.input();
+        System.out.println(h1.toString()+">"+h2.toString()+"="+h1.IsGreaterThan(h2));
+        System.out.println(h1.toString()+"<"+h2.toString()+"="+h1.IsLessThan(h2));
+        System.out.println(h1.toString()+"=="+h2.toString()+"="+h1.IsEqualTo(h2));
+        System.out.println(h1.toString()+"!="+h2.toString()+"="+h1.IsNotEqualTo(h2));
+        System.out.println(h1.toString()+"<="+h2.toString()+"="+h1.IsLessThanOrEqualTo(h2));
+        System.out.println(h1.toString()+">="+h2.toString()+"="+h1.IsGreaterThanOrEqualTo(h2));
+            h1.add(h2);
+
+    }
+}
